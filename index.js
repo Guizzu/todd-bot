@@ -16,7 +16,9 @@ for (const file of commandFiles) {
 }
 
 client.once(Events.ClientReady, () => {
-	console.log('Ready!');
+	console.log(`Ready to Serve ${client.guilds.cache.size} Guilds!`);
+	console.log(`Listening to ${client.commands.size} Command(s)!`);
+	console.log(`${JSON.stringify(client.guilds.cache.map(v => v.name))}`);
 });
 
 client.on(Events.InteractionCreate, async interaction => {
