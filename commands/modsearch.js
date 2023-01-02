@@ -29,7 +29,7 @@ module.exports = {
 		const response = await axios.get(`https://api.bethesda.net/mods/ugc-workshop/list/?number_results=20&order=desc&page=1&platform=XB1&product=${subcommand}&sort=popular-day&text=${focusedValue}`).catch(() => null);
 		const data = response.data.platform.response.content;
 		await interaction.respond(
-			data.map(choice => ({ name: `${choice.name.substring(0, 80)}  (${choice.username})`, value: choice.content_id })),
+			data.map(choice => ({ name: `${choice.name.substring(0, 60)}  (${choice.username})`, value: choice.content_id })),
 		);
 	},
 	async execute(interaction) {
