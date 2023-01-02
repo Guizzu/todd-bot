@@ -35,7 +35,7 @@ module.exports = {
 	async execute(interaction) {
 		const value = interaction.options.getString('query');
 		const response = await axios.get(`https://api.bethesda.net/mods/ugc-workshop/content/get?content_id=${value}`).catch(() => null)
-		if (!response) return interaction.reply(({ content: 'No data found.', ephemeral: true }))
+		if (!response) return interaction.reply(({ content: 'No data found.', ephemeral: true })).catch(() => null)
 		const data = response.data.platform.response.content
 		return interaction.reply({
 			"embeds": [
@@ -57,6 +57,6 @@ module.exports = {
 					}
 				}
 			]
-		});
+		}).catch(() => null);
 	}
 };
