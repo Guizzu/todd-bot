@@ -30,7 +30,7 @@ module.exports = {
 		const data = response.data.platform.response.content;
 		await interaction.respond(
 			data.map(choice => ({ name: `${choice.name.substring(0, 60)}  (${choice.username})`, value: choice.content_id })),
-		);
+		).catch(() => null);
 	},
 	async execute(interaction) {
 		const value = interaction.options.getString('query');
