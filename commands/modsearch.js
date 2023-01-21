@@ -45,7 +45,7 @@ module.exports = {
 					"title": data.name,
 					"description": `${data.description.substring(0, 200)}...`,
 					"color": 0x00FFFF,
-					"url": `https://mods.bethesda.net/en/${data.product.toLowerCase()}/mod-detail/${data.content_id}`,
+					"url": `https://mods.llo.app/${data.content_id}`,
 					"author": {
 						"name": data.username,
 						"url": `https://mods.bethesda.net/en/${data.product.toLowerCase()}?author_username=${data.username}`
