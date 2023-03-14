@@ -7,11 +7,11 @@ require('dotenv').config();
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
-cron.schedule("*/10 * * * *", async function() {
+cron.schedule("*/10 * * * *", async function () {
 	let status = 'Online';
 	const fetch = await ofetch(`https://api.bethesda.net/mods/ugc-workshop/list/`).catch(() => null);
 	if (!fetch) return status = 'Offline';
-  client.user.setPresence({
+	client.user.setPresence({
 		activities: [{ name: `Beth.net is ${status}`, type: ActivityType.Watching }]
 	});
 });
