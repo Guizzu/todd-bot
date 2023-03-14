@@ -7,12 +7,12 @@ require('dotenv').config();
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
-cron.schedule("*/10 * * * *", async function () {
-	let status = 'Online';
-	const fetch = await ofetch(`https://api.bethesda.net/mods/ugc-workshop/list/`).catch(() => null);
-	if (!fetch) return status = 'Offline';
+cron.schedule("*/1 * * * *", async function () {
+	let status = 'up';
+	const fetch = await ofetch(`https://api.bethesda.net/mods/ugc-workshop/list/?number_results=20&order=asc&page=1&sort=published&product=skyrim&platform=xb1`).catch(() => null);
+	if (!fetch) status = 'down';
 	client.user.setPresence({
-		activities: [{ name: `Beth.net is ${status}`, type: ActivityType.Watching }]
+		activities: [{ name: `Bethesda.net is ${status}`, type: ActivityType.Playing }]
 	});
 });
 
