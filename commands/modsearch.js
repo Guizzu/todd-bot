@@ -39,22 +39,22 @@ module.exports = {
 		if (!fetch) return interaction.reply(({ content: 'No data found.', ephemeral: true })).catch(() => null);
 		const data = fetch.platform.response.content;
 		return interaction.reply({
-			"embeds": [
+			embeds: [
 				{
-					"type": "rich",
-					"title": data.name,
-					"description": `${data.description.substring(0, 200)}...`,
-					"color": 0x00FFFF,
-					"url": `https://mods.llo.app/${data.content_id}`,
-					"author": {
-						"name": data.username,
-						"url": `https://mods.bethesda.net/en/${data.product.toLowerCase()}?author_username=${data.username}`
+					type: "rich",
+					title: data.name,
+					description: `${data.description.substring(0, 200)}...`,
+					color: 0x00FFFF,
+					url: `https://mods.llo.app/${data.content_id}`,
+					author: {
+						name: data.username,
+						url: `https://mods.bethesda.net/en/${data.product.toLowerCase()}?author_username=${data.username}`
 					},
-					"thumbnail": {
-						"url": data.preview_file_url
+					thumbnail: {
+						url: data.preview_file_url
 					},
-					"footer": {
-						"text": `${formatBytes(data.depot_size)} • ${data.follower_count.toLocaleString()} favorites`
+					footer: {
+						text: `${formatBytes(data.depot_size)} • ${data.follower_count.toLocaleString()} favorites`
 					}
 				}
 			]

@@ -4,8 +4,9 @@ const cron = require("node-cron");
 const { ofetch } = require('ofetch');
 const { Client, Collection, Events, GatewayIntentBits, ActivityType } = require('discord.js');
 require('dotenv').config();
+function formatBytes(a, b = 2) { if (!+a) return "0 Bytes"; const c = 0 > b ? 0 : b, d = Math.floor(Math.log(a) / Math.log(1024)); return `${parseFloat((a / Math.pow(1024, d)).toFixed(c))} ${["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"][d]}` };
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 
 cron.schedule("*/1 * * * *", async function () {
 	let status = 'up';
@@ -32,13 +33,45 @@ client.once(Events.ClientReady, () => {
 	console.log(`${JSON.stringify(client.guilds.cache.map(v => v.name))}`);
 });
 
+client.on(Events.MessageCreate, async message => {
+	if (message.content.includes('mods.bethesda.net/')) {
+		const regExp = new RegExp("([0-9]+)(?!.*[0-9])", "gi");
+		const cid = regExp.exec(message.content);
+		if (!cid) return;
+		const fetch = await ofetch(`https://api.bethesda.net/mods/ugc-workshop/content/get?content_id=${cid[1]}`, { retry: 3 }).catch(() => null);
+		if (!fetch) return;
+		const data = fetch.platform.response.content;
+		message.reply({
+			embeds: [
+				{
+					type: "rich",
+					title: data.name,
+					description: `${data.description.substring(0, 200)}...`,
+					color: 0x00FFFF,
+					url: `https://mods.llo.app/${data.content_id}`,
+					author: {
+						name: data.username,
+						url: `https://mods.bethesda.net/en/${data.product.toLowerCase()}?author_username=${data.username}`
+					},
+					thumbnail: {
+						url: data.preview_file_url
+					},
+					footer: {
+						text: `${formatBytes(data.depot_size)} • ${data.follower_count.toLocaleString()} favorites`
+					}
+				}
+			],
+			allowedMentions: {
+				repliedUser: false
+			}
+		}).catch(() => null);
+	} else return;
+});
+
 client.on(Events.InteractionCreate, async interaction => {
 	if (interaction.isChatInputCommand()) {
-
 		const command = client.commands.get(interaction.commandName);
-
 		if (!command) return;
-
 		try {
 			await command.execute(interaction);
 		} catch (error) {
@@ -46,18 +79,15 @@ client.on(Events.InteractionCreate, async interaction => {
 			await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
 		}
 	} else if (interaction.isAutocomplete()) {
-
 		const command = interaction.client.commands.get(interaction.commandName);
-
 		if (!command) return
-
 		try {
 			await command.autocomplete(interaction);
 		} catch (error) {
 			console.error(error);
 			await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
 		}
-	} else return
+	} else return;
 });
 
 client.login(process.env.TOKEN);
