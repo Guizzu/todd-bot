@@ -41,30 +41,7 @@ client.on(Events.MessageCreate, async message => {
 		const fetch = await ofetch(`https://api.bethesda.net/mods/ugc-workshop/content/get?content_id=${cid[1]}`, { retry: 3 }).catch(() => null);
 		if (!fetch) return;
 		const data = fetch.platform.response.content;
-		message.reply({
-			embeds: [
-				{
-					type: "rich",
-					title: data.name,
-					description: `${data.description.substring(0, 200)}...`,
-					color: 0x00FFFF,
-					url: `https://mods.llo.app/${data.content_id}`,
-					author: {
-						name: data.username,
-						url: `https://mods.bethesda.net/en/${data.product.toLowerCase()}?author_username=${data.username}`
-					},
-					thumbnail: {
-						url: data.preview_file_url
-					},
-					footer: {
-						text: `${formatBytes(data.depot_size)} • ${data.follower_count.toLocaleString()} favorites`
-					}
-				}
-			],
-			allowedMentions: {
-				repliedUser: false
-			}
-		}).catch(() => null);
+		message.reply(`https://mods.llo.app/${data.content_id}`).catch(() => null);
 	} else return;
 });
 
