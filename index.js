@@ -1,21 +1,10 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const cron = require("node-cron");
 const { ofetch } = require('ofetch');
-const { Client, Collection, Events, GatewayIntentBits, ActivityType } = require('discord.js');
+const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 require('dotenv').config();
-function formatBytes(a, b = 2) { if (!+a) return "0 Bytes"; const c = 0 > b ? 0 : b, d = Math.floor(Math.log(a) / Math.log(1024)); return `${parseFloat((a / Math.pow(1024, d)).toFixed(c))} ${["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"][d]}` };
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
-
-cron.schedule("*/1 * * * *", async function () {
-	let status = 'up';
-	const fetch = await ofetch(`https://api.bethesda.net/mods/ugc-workshop/list/?number_results=20&order=asc&page=1&sort=published&product=skyrim&platform=xb1`).catch(() => null);
-	if (!fetch) status = 'down';
-	client.user.setPresence({
-		activities: [{ name: `Bethesda.net is ${status}`, type: ActivityType.Playing }]
-	});
-});
 
 client.commands = new Collection();
 const commandsPath = path.join(__dirname, 'commands');
