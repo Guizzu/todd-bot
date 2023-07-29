@@ -30,7 +30,7 @@ client.on(Events.MessageCreate, async message => {
 		const fetch = await ofetch(`https://api.bethesda.net/mods/ugc-workshop/content/get?content_id=${cid[1]}`, { retry: 3 }).catch(() => null);
 		if (!fetch) return;
 		const data = fetch.platform.response.content;
-		message.reply(`https://mods.llo.app/${data.content_id}`).catch(() => null);
+		message.reply(`https://mods.bugthesda.net/${data.content_id}`).catch(() => null);
 	} else return;
 });
 
