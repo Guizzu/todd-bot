@@ -36,6 +36,6 @@ module.exports = {
 		const fetch = await ofetch(`https://api.bethesda.net/mods/ugc-workshop/content/get?content_id=${value}`, { retry: 3 }).catch(() => null);
 		if (!fetch) return interaction.reply(({ content: 'No data found.', ephemeral: true })).catch(() => null);
 		const data = fetch.platform.response.content;
-		return interaction.reply(`https://mods.llo.app/${data.content_id}`).catch(() => null);
+		return interaction.reply(`https://mods.bugthesda.net/${data.content_id}`).catch(() => null);
 	}
 };
