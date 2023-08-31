@@ -21,6 +21,14 @@ module.exports = {
 					.setDescription(`Search query`)
 					.setRequired(true)
 					.setAutocomplete(true))),
+		.addSubcommand(subcommand =>
+			subcommand
+				.setName('starfield')
+				.setDescription('Searches and provides information on the queried Starfield mod.')
+				.addStringOption(option => option.setName('query')
+					.setDescription(`Search query`)
+					.setRequired(true)
+					.setAutocomplete(true))),
 	async autocomplete(interaction) {
 		const subcommand = interaction.options.getSubcommand();
 		const focusedValue = interaction.options.getFocused();
